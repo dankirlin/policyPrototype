@@ -3,10 +3,6 @@
 #right{float:right;width:100px;}
 #center{margin:0 auto;width:200px;}
 
-*{
-    word-wrap: break-word;
-}
-
 .left-panel{
     border: 5px border-style solid;
     
@@ -17,4 +13,11 @@
 .searchbar {
     margin: auto;
     padding-top: 10px;
+}
+.policy_search_result:hover {
+    font-weight: bold;
+}
+
+*{
+    word-wrap: break-word;
 }

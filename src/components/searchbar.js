@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import { connect } from 'react-redux';
 import { fetchPolicies } from '../actions';
 import { Button, FormGroup, FormControl, InputGroup } from 'react-bootstrap';
-import {SearchBox} from 'office-ui-fabric-react/lib/SearchBox';
+import {SearchBox} from 'office-ui-fabric-react';
 
 class SearchBar extends Component {
     constructor(props) {

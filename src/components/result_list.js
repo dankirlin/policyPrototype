@@ -31,11 +31,14 @@ class ResultList extends Component{
                 <List
                     items = {this.props.policies}
                     onRenderCell={ (item, index) => (
-                        <div className='ms-ListBasicExample-itemCell' data-is-focusable={ true } onClick={() => {
-                            this.props.fetchPolicy(item.policyNumber);
-                        }}>
+                        <div className='ms-ListBasicExample-itemCell ms-bgColor-themePrimary ms-fontColor-white policy_search_result' 
+                            data-is-focusable={ true } 
+                            onClick={() => {
+                                this.props.fetchPolicy(item.policyNumber);
+                            }}
+                        >
                             <div className='ms-ListBasicExample-itemContent'>
-                                <div className='ms-ListBasicExample-itemName'>{ item.policyNumber }</div>
+                                <div className='ms-ListBasicExample-itemName policy_search_result'>{ item.policyNumber }</div>
                                 <div className='ms-ListBasicExample-itemDesc'>
                                     <ul>
                                         <li><i className="ms-Icon ms-Icon--Contact" /> Owner: {item.name}</li>
