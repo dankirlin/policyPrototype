@@ -1,72 +1,53 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import SearchResult from './search_result';
-import { fetchPolicies } from '../actions';
+import { fetchPolicies, fetchPolicy } from '../actions';
 import {Nav, NavItem} from 'react-bootstrap';
+import { List, FocusZone, FocusZoneDirection, Spinner, Label, SpinnerSize } from 'office-ui-fabric-react';
 
 class ResultList extends Component{
     
     constructor(props={policies:[]}){
-        //console.log(props);
         super(props);
         this.state = {policies : props.policies};
-        //console.log(this.state);
     }
 
-    render(){
-        //console.log(this.props);
-        const policies = [
-            {
-                _Self : "/resources/Policy/Conv_WL_Values_TC01",
-                policyNumber : "Conv_TL_Values_TC01",
-                name : "Jimmy  Myi_Conv1",
-                status : "Active",
-                issueAge : "65",
-                dateOfBirth : "1947-01-07T00:00:00",
-                governmentId : "414287567",
-                lineOfBusiness : "Traditional Life",
-                applicationReceivedDate : "1900-01-01T00:00:00"
-            },
-            {
-                _Self : "/resources/Policy/Conv_WL_Values_TC02",
-                policyNumber : "Conv_WL_Values_TC02",
-                name : "Jimmy  Myi_Conv2",
-                status : "Pending",
-                issueAge : "65",
-                dateOfBirth : "1947-01-07T00:00:00",
-                governmentId : "414287567",
-                lineOfBusiness : "Whole Life",
-                applicationReceivedDate : "1900-01-01T00:00:00"
-            },
-            {
-                _Self : "/resources/Policy/Conv_WL_Values_TC03",
-                policyNumber : "Conv_TL_Values_TC01",
-                name : "Jimmy  Myi_Conv3",
-                status : "Active",
-                issueAge : "65",
-                dateOfBirth : "1947-01-07T00:00:00",
-                governmentId : "414287567",
-                lineOfBusiness : "Traditional Life",
-                applicationReceivedDate : "1900-01-01T00:00:00"
-            }
-        ];
-        let policyList;
-        if(!this.props.policies || this.props.policies.length == 0 )
-            policyList = policies.map((item)=>{
-                //console.log(item);
-                return(
-                         <NavItem title={item.policyNumber}>
-                            <SearchResult key={item.policyNumber} data={item} />
-                        </NavItem>
-                );
-            });
-        //console.log(this.props);
-       else
-             policyList = this.props.policies.map((item)=>{
-                //console.log(item);
-                return <SearchResult data={item} />
-            });
-        //console.log(policyList);
+    componentDidMount() {
+        this.props.fetchPolicies('WL', () => {});
+    }
+
+    render(){     
+        if ((!this.props.policies) || this.props.policies.length == 0) {
+            return (
+                <div>
+                    <Label>Large Spinner With Label</Label>
+                    <Spinner size={ SpinnerSize.large } label='Loading Policies' ariaLive='assertive' />
+                </div>
+            )
+        }
+
+        return (
+            <FocusZone direction={ FocusZoneDirection.vertical }>
+                <List
+                    items = {this.props.policies}
+                    onRenderCell={ (item, index) => (
+                        <div className='ms-ListBasicExample-itemCell' data-is-focusable={ true } onClick={() => {
+                            this.props.fetchPolicy(item.policyNumber);
+                        }}>
+                            <div className='ms-ListBasicExample-itemContent'>
+                                <div className='ms-ListBasicExample-itemName'>{ item.policyNumber }</div>
+                                <div className='ms-ListBasicExample-itemDesc'>
+                                    <ul>
+                                        <li><i className="ms-Icon ms-Icon--Contact" /> Owner: {item.name}</li>
+                                        <li><i className={item.status === 'Active' ? "ms-Icon ms-Icon--Completed" : 'ms-Icon ms-Icon--Clock'}/> Status: {item.status}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                />
+            </FocusZone>
+        );
         return(
             <div className="result-list">
                 <Nav bsStyle="pills" stacked>
@@ -79,9 +60,7 @@ class ResultList extends Component{
 }
 
 function mapStateToProps(state){
-    //console.log(`here --> ${state}`);
     return {policies : state.policies};
 }
 
-
-export default connect(mapStateToProps, {fetchPolicies})(ResultList);
+export default connect(mapStateToProps, {fetchPolicies, fetchPolicy})(ResultList);

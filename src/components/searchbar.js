@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import { connect } from 'react-redux';
 import { fetchPolicies } from '../actions';
 import { Button, FormGroup, FormControl, InputGroup } from 'react-bootstrap';
+import {SearchBox} from 'office-ui-fabric-react/lib/SearchBox';
 
 class SearchBar extends Component {
     constructor(props) {
@@ -22,11 +23,22 @@ class SearchBar extends Component {
         this.props.fetchPolicies(this.state.searchTerm, callback);        
     }
 
-    onTextChange(e) {
-        this.setState({ searchTerm: e.target.value });
+    onTextChange(searchTerm) {
+        this.setState({ searchTerm });
+    }
+
+    onFabricSearch() {
+        this.props.fetchPolicies(this.state.searchTerm, () => {})
     }
 
     render() {
+
+        return <SearchBox
+            value={this.state.searchTerm}
+            onChange={this.onTextChange.bind(this)}
+            onSearch= {this.onFabricSearch.bind(this)}
+        />
+
         const isLoading = this.state.isLoading;
         return(
             <form
