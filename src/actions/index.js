@@ -10,7 +10,7 @@ const auth = {
 };
 
 
-export function fetchPolicies(policyNumber, callback) {
+export function fetchPolicies(policyNumber, callback = () => {}) {
     const limit = 8;
     let params = { limit };
     if (policyNumber) {
