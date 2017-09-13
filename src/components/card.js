@@ -24,11 +24,16 @@ class Card extends Component {
       return (<div>Loading...</div>);
     }
     const valueList = this.props.items.filter(
-      (item) => { return !item.name.includes("ID")}
+      (item) => { return !item.name.includes("ID")&&!item.name.includes("Code")}
     )
     .map((item) => {
+      let value = item.value;
+      if(typeof value === 'string' && Date.parse(value)){
+        console.log(item.value);
+        value = item.value.split('T')[0];
+      }
       return (
-        <CardItem key={item.name} name={item.name} value={item.value}/>
+        <CardItem key={item.name} name={item.name} value={value}/>
       );
     });
 
